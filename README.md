@@ -12,6 +12,6 @@ The script plot.py contains the function `plot`, which is the function that is u
 - advanced text shows extra information, like number of odd and even numbers
 
 ###### EG
-- plot(104,True,True)\
-- plot(7,False,True)\
-- plot(27,False,False
+- plot(104,True,True)
+- plot(7,False,True)
+- plot(27,False,False)
