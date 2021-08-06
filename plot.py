@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.interpolate import make_interp_spline, BSpline
 
 
-def plot(start: int, hide_boxes: bool, advanced_stats: bool):
+def collatz(start: int):
     if start <= 0:
         raise ValueError("Error! Positive, non-zero integers only")
     numOdd = 0
@@ -19,8 +20,16 @@ def plot(start: int, hide_boxes: bool, advanced_stats: bool):
             numEven += 1
         yPos.append(start)
         count += 1
+    return [yPos, count, numOdd, numEven]
 
-    fig, ax = plt.subplots(figsize=(20, 6))
+
+def plot_coll(funcIn: list, hide_boxes=False, hide_text=False, advanced_stats=False, smooth=False):
+    yPos = funcIn[0]
+    count = funcIn[1]
+    numOdd = funcIn[2]
+    numEven = funcIn[3]
+
+    fig, ax = plt.subplots(figsize=(6, 4))
 
     if not hide_boxes:
         for i, v in enumerate(yPos):
@@ -37,8 +46,7 @@ def plot(start: int, hide_boxes: bool, advanced_stats: bool):
 
     if count < 100:
         plt.xticks(np.arange(0, count + 1, 1.0))
-    ax.plot(yPos, '-')
-    plt.style.use('seaborn-whitegrid')
+    plt.style.use('dark_background')
 
     props = dict(boxstyle='round', facecolor='red', alpha=0.5)
     if advanced_stats:
@@ -51,9 +59,21 @@ def plot(start: int, hide_boxes: bool, advanced_stats: bool):
         textString = f"Starting Value: {yPos[0]}\n" \
                      f"Steps: {count}\n" \
                      f"Highest Value: {int(max(yPos))}"
-    ax.text(0.05, 0.95, textString, transform=ax.transAxes, fontsize=14,
-            verticalalignment='top', bbox=props)
-    plt.show()
+    if not hide_text:
+        ax.text(0.05, 0.95, textString, transform=ax.transAxes, fontsize=14,
+                verticalalignment='top', bbox=props)
+    if smooth:
+        print(type(yPos))
+        # 300 represents number of points to make between T.min and T.max
+        xnew = np.linspace(0, count, 300)
+        spl = make_interp_spline(range(0,count+1),yPos, k=5)  # type: BSpline
+        power_smooth = spl(xnew)
+
+        ax.plot_coll(xnew, power_smooth)
+        plt.show()
+    else:
+        ax.plot_coll(yPos, '-')
+        plt.show()
 
 
-plot(104, False, True)
+
