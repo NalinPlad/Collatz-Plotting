@@ -15,3 +15,5 @@ The script plot.py contains the function `plot`, which is the function that is u
 - plot(104,True,True)
 - plot(7,False,True)
 - plot(27,False,False)
+
+<img width="1292" alt="Screenshot 2023-03-13 at 7 48 58 PM" src="https://user-images.githubusercontent.com/43052612/224880348-63171cfb-4be1-4866-8689-bfde18094a39.png">
